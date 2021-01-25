@@ -5,17 +5,22 @@ import sys
 
 this_path = os.getcwd()
 
+
 # функция создания папки
+def create_dir(folder):
+    os.mkdir(folder)
+    message = f'Создана папка {folder}!'
+    return message
 
 
 def create_folder():
     folder = input('Введите название папки, которую нужно создать: ')
     full_path = os.path.join(this_path, folder)
     if not os.path.exists(full_path):
-        os.mkdir(folder)
-        print(f'Создана папка {folder}!')
+        message = create_dir(folder)
     else:
-        print(f'Папка {folder} уже существует!')
+        message = f'Папка {folder} уже существует!'
+    return message
 
 
 # функция удаления папки или файла
@@ -90,14 +95,14 @@ def view_only_files():
 
 
 def view_sys_info():
-    print(f'Операционная система: {os.name}, {sys.platform}')
+    return f'Операционная система: {os.name}, {sys.platform}'
 
 
 # функция вывода создателя программы
 
 
 def display_program_creator():
-    print('Создатель программы - Светлана Ж.')
+    return 'Создатель программы - Светлана Ж.'
 
 
 # функция смены рабочей директории

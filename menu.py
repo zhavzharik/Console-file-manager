@@ -23,7 +23,7 @@ while True:
 
     choice = input('Выберите пункт меню: ')
     if choice == '1':
-        create_folder()
+        print(create_folder())
 
     elif choice == '2':
         delete_folder_file()
@@ -41,10 +41,10 @@ while True:
         view_only_files()
 
     elif choice == '7':
-        view_sys_info()
+        print(view_sys_info())
 
     elif choice == '8':
-        display_program_creator()
+        print(display_program_creator())
 
     elif choice == '9':
         play_victory()
