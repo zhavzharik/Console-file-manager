@@ -18,7 +18,8 @@ while True:
     print('10. мой банковский счет')
     print('11. смена рабочей директории')
     print('12. вернуться в директорию проекта "Консольного менеджера" ')
-    print('13. выход')
+    print('13. сохранить содержимое рабочей директории в файл')
+    print('14. выход')
     print('=' * 25)
 
     choice = input('Выберите пункт меню: ')
@@ -32,13 +33,13 @@ while True:
         copy_folder_file()
 
     elif choice == '4':
-        view_this_dir()
+        print(f'Файлы в рабочей директории: {get_only_files()}\nПапки в рабочей директории: {get_only_folders()}')
 
     elif choice == '5':
-        view_only_folders()
+        print(f'Папки в рабочей директории: {get_only_folders()}')
 
     elif choice == '6':
-        view_only_files()
+        print(f'Файлы в рабочей директории: {get_only_files()}')
 
     elif choice == '7':
         print(view_sys_info())
@@ -59,6 +60,10 @@ while True:
         return_project_dir()
 
     elif choice == '13':
+        dir_in_files()
+        print('Содержимое рабочей директории сохранено в файл listdir.txt')
+
+    elif choice == '14':
         break
 
     else:
