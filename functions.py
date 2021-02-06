@@ -150,4 +150,6 @@ def read_list(file_name):
         with open(file_name, 'r') as f:
             for item in f:
                 data.append(item.replace('\n', ''))
-        return list(data)
+    else:
+        data = []
+    return list(data)
