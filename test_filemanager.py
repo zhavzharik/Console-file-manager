@@ -1,6 +1,7 @@
 import os
 import sys
 from functions import create_dir, display_program_creator, view_sys_info, read_number, read_list
+from victory import gen_name_question
 
 
 def test_create_dir():
@@ -30,3 +31,7 @@ def test_read_list():
         for item in data:
             f.write(f'{item}\n')
     assert read_list('test_list.json') == ['food', 'house']
+
+
+def test_gen_name_question():
+    assert len(gen_name_question()) == 5

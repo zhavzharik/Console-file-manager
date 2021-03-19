@@ -9,7 +9,8 @@ files = []  # для сохранения списка файлов в теку�
 folders = []  # для сохранения списка папок в текущей дирректории
 
 
-# функция создания папки
+# функции создания папки
+
 def create_dir(folder):
     os.mkdir(folder)
     message = f'Создана папка {folder}!'
@@ -19,50 +20,49 @@ def create_dir(folder):
 def create_folder():
     folder = input('Введите название папки, которую нужно создать: ')
     full_path = os.path.join(this_path, folder)
-    if not os.path.exists(full_path):
+    try:
         message = create_dir(folder)
-    else:
+    except FileExistsError:
         message = f'Папка {folder} уже существует!'
     return message
 
 
 # функция удаления папки или файла
 
-
 def delete_folder_file():
     folder = input('Введите название папки/файла, которую(ый) нужно удалить: ')
     full_path = os.path.join(this_path, folder)
-    if not os.path.exists(full_path):
-        print('Такой(го) папки/файла не существует!')
-    elif os.path.isdir(full_path):
+    try:
         os.rmdir(full_path)
         print(f'Папка {folder} удалена!')
-    else:
+    except NotADirectoryError:
         os.remove(full_path)
         print(f'Файл {folder} удален!')
+    except FileNotFoundError:
+        print('Такой(го) папки/файла не существует!')
 
 
 # функция копирования папки или файла
-
 
 def copy_folder_file():
     folder = input('Введите название папки/файла, которую(ый) нужно скопировать: ')
     full_path = os.path.join(this_path, folder)
     if not os.path.exists(full_path):
         print('Такой(го) папки/файла не существует!')
-    elif os.path.isdir(full_path):
-        new_folder = input('Введите название для копии папки: ')
-        new_full_path = os.path.join(this_path, new_folder)
-        shutil.copytree(full_path, new_full_path)
-        print(f'Папка {folder} скопирована в папку {new_folder}!')
     else:
-        new_folder = input('Введите название для копии файла: ')
+        new_folder = input('Введите название для копии папки/файла: ')
         new_full_path = os.path.join(this_path, new_folder)
-        shutil.copyfile(full_path, new_full_path)
-        print(f'Файл {folder} скопирован в файл {new_folder}!')
+        try:
+            shutil.copytree(full_path, new_full_path)
+            print(f'Папка {folder} скопирована в папку {new_folder}!')
+        except NotADirectoryError:
+            shutil.copyfile(full_path, new_full_path)
+            print(f'Файл {folder} скопирован в файл {new_folder}!')
+        except FileNotFoundError:
+            print('Такой(го) папки/файла не существует!')
+
 
 # функция просмотра только папок
-
 
 def get_only_folders():
     content_list = list(os.listdir())
@@ -84,7 +84,6 @@ def get_only_files():
 
 # функция сохранения содержимого рабочей директории в файл listdir.txt
 
-
 def dir_in_files():
     with open('listdir.txt', 'w', encoding='utf-8') as f:
         f.write(f'Файлы в рабочей директории: {get_only_files()}\nПапки в рабочей директории: {get_only_folders()}')
@@ -92,13 +91,11 @@ def dir_in_files():
 
 # функция просмотра информации об операционной системе
 
-
 def view_sys_info():
     return f'Операционная система: {os.name}, {sys.platform}'
 
 
 # функция вывода создателя программы
-
 
 def display_program_creator():
     return 'Создатель программы - Светлана Ж.'
@@ -118,7 +115,6 @@ def change_dir():
 
 # функция возврата в директорию проекта "Консольный файловый менеджер"
 
-
 def return_project_dir():
     if os.getcwd() == os.path.join('D:' + os.sep, 'Python', 'Projects', 'Консольный файловый менеджер'):
         print('Вы уже находитесь в директории "Консольного файлового менеджера" ')
@@ -131,7 +127,6 @@ def return_project_dir():
 
 # функция чтения числа, которое сохранили
 
-
 def read_number(file_name):
     if os.path.exists(file_name):
         with open(file_name, 'r') as f:
@@ -143,7 +138,6 @@ def read_number(file_name):
 
 # функция чтения списка данных, который сохранили
 
-
 def read_list(file_name):
     if os.path.exists(file_name):
         data = []
@@ -153,3 +147,43 @@ def read_list(file_name):
     else:
         data = []
     return list(data)
+
+
+# декоратор для функции с одним входным аргументом
+
+def add_separators_arg1(my_func):
+    def wrapper(arg1):
+        print('*' * 39)
+        my_func(arg1)
+        print('*' * 39)
+    return wrapper
+
+
+# декоратор для функции с тремя входными аргументами
+
+def add_separators_arg3(my_func):
+    def wrapper(arg1, arg2, arg3):
+        print('*' * 39)
+        my_func(arg1, arg2, arg3)
+        print('*' * 39)
+    return wrapper
+
+
+# функция печати баланса счета
+
+@add_separators_arg1
+def print_funds(personal_account):
+    print(f'Баланс счета: {personal_account} руб.')
+
+
+# функция печати истории покупок
+
+@add_separators_arg3
+def print_history(sum_history, name_history, total_sum_buy):
+    if len(sum_history) == 0:
+        print('Покупок не было!')
+    else:
+        print('История покупок:')
+        for i in range(len(name_history)):
+            print(f" {name_history[i]} {'_' * (25 - len(name_history[i]))} {sum_history[i]} руб.")
+        print(f" ИТОГО {'_' * (25 - len(str(total_sum_buy)))} {total_sum_buy} руб.")
