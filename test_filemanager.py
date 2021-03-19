@@ -1,6 +1,6 @@
 import os
 import sys
-from functions import create_dir, display_program_creator, view_sys_info
+from functions import create_dir, display_program_creator, view_sys_info, read_number, read_list
 
 
 def test_create_dir():
@@ -15,3 +15,18 @@ def test_display_program_creator():
 
 def test_view_sys_info():
     assert view_sys_info() == f'Операционная система: {os.name}, {sys.platform}'
+
+
+def test_read_number():
+    number = 20000
+    with open('test_number.json', 'w') as f:
+        f.write(f'{number}')
+    assert read_number('test_number.json') == 20000
+
+
+def test_read_list():
+    data = ['food', 'house']
+    with open('test_list.json', 'w') as f:
+        for item in data:
+            f.write(f'{item}\n')
+    assert read_list('test_list.json') == ['food', 'house']

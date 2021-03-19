@@ -2,8 +2,11 @@
 import os
 import shutil
 import sys
+import json
 
 this_path = os.getcwd()
+files = []  # для сохранения списка файлов в текущей директории
+folders = []  # для сохранения списка папок в текущей дирректории
 
 
 # функция создания папки
@@ -38,6 +41,7 @@ def delete_folder_file():
         os.remove(full_path)
         print(f'Файл {folder} удален!')
 
+
 # функция копирования папки или файла
 
 
@@ -57,38 +61,33 @@ def copy_folder_file():
         shutil.copyfile(full_path, new_full_path)
         print(f'Файл {folder} скопирован в файл {new_folder}!')
 
-
-# функция просмотра содержимого рабочей директории
-
-
-def view_this_dir():
-    print('Содержимое рабочей директории: ')
-    print(os.listdir())
-
-
 # функция просмотра только папок
 
 
-def view_only_folders():
+def get_only_folders():
     content_list = list(os.listdir())
-    folders = []
     for folder in content_list:
         if os.path.isdir(folder):
             folders.append(folder)
-    print('Папки в рабочей директории:')
-    print(folders)
+    return folders
 
 
 # функция просмотра только файлов
 
-def view_only_files():
+def get_only_files():
     content_list = list(os.listdir())
-    files = []
     for file in content_list:
         if os.path.isfile(file):
             files.append(file)
-    print('Файлы в рабочей директории:')
-    print(files)
+    return files
+
+
+# функция сохранения содержимого рабочей директории в файл listdir.txt
+
+
+def dir_in_files():
+    with open('listdir.txt', 'w', encoding='utf-8') as f:
+        f.write(f'Файлы в рабочей директории: {get_only_files()}\nПапки в рабочей директории: {get_only_folders()}')
 
 
 # функция просмотра информации об операционной системе
@@ -112,9 +111,10 @@ def change_dir():
     try:
         os.chdir(new_path)
         print(f'Вы перешли в директорию: {new_path}')
-        view_this_dir()
+        print(f'Файлы в рабочей директории: {get_only_files()}\nПапки в рабочей директории: {get_only_folders()}')
     except OSError:
         print(f'Директории: {new_path} не существует!')
+
 
 # функция возврата в директорию проекта "Консольный файловый менеджер"
 
@@ -126,4 +126,30 @@ def return_project_dir():
         new_path = os.path.join('D:' + os.sep, 'Python', 'Projects', 'Консольный файловый менеджер')
         os.chdir(new_path)
         print('Вы перешли в директорию проекта "Консольный менеджер" ')
-        view_this_dir()
+        print(f'Файлы в рабочей директории: {get_only_files()}\nПапки в рабочей директории: {get_only_folders()}')
+
+
+# функция чтения числа, которое сохранили
+
+
+def read_number(file_name):
+    if os.path.exists(file_name):
+        with open(file_name, 'r') as f:
+            number = json.load(f)
+    else:
+        number = 0
+    return number
+
+
+# функция чтения списка данных, который сохранили
+
+
+def read_list(file_name):
+    if os.path.exists(file_name):
+        data = []
+        with open(file_name, 'r') as f:
+            for item in f:
+                data.append(item.replace('\n', ''))
+    else:
+        data = []
+    return list(data)

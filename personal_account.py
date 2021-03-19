@@ -1,11 +1,14 @@
 # функция ведения персонального счета (пополнение, списание, учет покупок, информация о балансе счета)
 
+from functions import read_number, read_list
+
 
 def my_personal_account():
-    personal_account = 0  # переменная для учета средств на личном счете пользователя
-    sum_history = []  # здесь будет храниться история суммы покупок
-    name_history = []  # здесь будет храниться история названий покупок
-    total_sum_buy = 0 # переменная для учета суммы всех покупок
+    personal_account = read_number('sum_account.json')  # читаем информацию о балансе счета
+    total_sum_buy = read_number('total_buy.json')       # читаем информацию об общей сумме покупок
+    sum_history = read_list('sum_history.json')         # читаем список сумм покупок
+    name_history = read_list('name_history.json')       # читаем список названий покупок
+
     while True:
         print('1. пополнение счета')
         print('2. покупка')
@@ -45,6 +48,16 @@ def my_personal_account():
             print(f'Баланс счета: {personal_account} руб.')
 
         elif choice == '5':
+            with open('sum_account.json', 'w') as f:
+                f.write(f'{personal_account}')
+            with open('sum_history.json', 'w') as f:
+                for item in sum_history:
+                    f.write(f'{item}\n')
+            with open('name_history.json', 'w') as f:
+                for item in name_history:
+                    f.write(f'{item}\n')
+            with open('total_buy.json', 'w') as f:
+                f.write(f'{total_sum_buy}')
             break
 
         else:
