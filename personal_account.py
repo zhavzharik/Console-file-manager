@@ -1,6 +1,6 @@
 # функция ведения персонального счета (пополнение, списание, учет покупок, информация о балансе счета)
 
-from functions import read_number, read_list
+from functions import read_number, read_list, print_funds, print_history
 
 
 def my_personal_account():
@@ -34,18 +34,10 @@ def my_personal_account():
                 name_history.append(name_buy)
 
         elif choice == '3':
-            if len(sum_history) == 0:
-                print('Покупок не было!')
-            else:
-                print('*' * 39)
-                print('История покупок:')
-                for i in range(len(name_history)):
-                    print(f" {name_history[i]} {'_' * (25 - len(name_history[i]))} {sum_history[i]} руб.")
-                print(f" ИТОГО {'_' * (25 - len(str(total_sum_buy)))} {total_sum_buy} руб.")
-                print('*' * 39)
+            print_history(sum_history, name_history, total_sum_buy)
 
         elif choice == '4':
-            print(f'Баланс счета: {personal_account} руб.')
+            print_funds(personal_account)
 
         elif choice == '5':
             with open('sum_account.json', 'w') as f:
